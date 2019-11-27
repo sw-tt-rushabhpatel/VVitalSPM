@@ -1,0 +1,11 @@
+framework module VVItalSDK {
+  umbrella header "VVItalSDK.h"
+
+  export *
+  module * { export * }
+}
+
+module VVItalSDK.Swift {
+    header "VVItalSDK-Swift.h"
+    requires objc
+}

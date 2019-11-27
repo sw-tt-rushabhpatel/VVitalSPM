@@ -1,0 +1,112 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.1.2 (swiftlang-1100.0.278 clang-1100.0.33.9)
+// swift-module-flags: -target arm64-apple-ios11.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name VVItalSDK
+import CoreBluetooth
+import Foundation
+import Swift
+import UIKit
+@_exported import VVItalSDK
+public struct VSException : Swift.Error {
+}
+public class measureMentStatus {
+  public static let STATUS_STOPPED: Swift.Int
+  public static let STATUS_READY: Swift.Int
+  public static let STATUS_IN_PROCESS: Swift.Int
+  public static let STATUS_COMPLETE: Swift.Int
+  public static let STATUS_ERROR: Swift.Int
+  @objc deinit
+}
+public class CommandName {
+  public static let CODE_MEASU: Swift.String
+  public static let CODE_DINFO: Swift.String
+  public static let CODE_CURDT: Swift.String
+  public static let CODE_TEMPM: Swift.String
+  public static let CODE_FWUPGRADE: Swift.String
+  @objc deinit
+}
+public class VitalEnum {
+  public enum MeasuType : Swift.Int {
+    case SpO2_PI_PR
+    case RR_PVi_PRV_SpO2_PI_PR
+    case BLOOD_PRESSURE
+    public typealias RawValue = Swift.Int
+    public init?(rawValue: Swift.Int)
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  @objc deinit
+}
+@objc open class VVitalManager : ObjectiveC.NSObject, CoreBluetooth.CBCentralManagerDelegate, CoreBluetooth.CBPeripheralDelegate {
+  public enum InCommandName : Swift.String {
+    case CODE_MEASU
+    case CODE_DINFO
+    case CODE_CURDT
+    case CODE_TEMPM
+    case CODE_FWUPGRADE
+    public typealias RawValue = Swift.String
+    public init?(rawValue: Swift.String)
+    public var rawValue: Swift.String {
+      get
+    }
+  }
+  public enum InMeasuType : Swift.Int {
+    case SpO2_PI_PR
+    case RR_PVi_PRV_SpO2_PI_PR
+    case BLOOD_PRESSURE
+    public typealias RawValue = Swift.Int
+    public init?(rawValue: Swift.Int)
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  public static let sharedInstance: VVItalSDK.VVitalManager
+  public var peripheralDiscoveredBlock: (([VVItalSDK.VSPeriphralDevice]) -> Swift.Void)?
+  public var peripheralConnectBlock: ((CoreBluetooth.CBPeripheral) -> Swift.Void)?
+  public var peripheralDisconnect: ((CoreBluetooth.CBPeripheral) -> Swift.Void)?
+  public typealias onCMDSuccess = (Swift.String, Swift.String) -> Swift.Void
+  public typealias onCMDFailure = (VVItalSDK.VSError, Swift.String) -> Swift.Void
+  public typealias onCMDException = (Swift.String, Swift.String) -> Swift.Void
+  public typealias onDeviceConnectionStateChange = (Swift.String) -> Swift.Void
+  @objc override dynamic public init()
+  public func onCommandResponse(onSuccess success: @escaping VVItalSDK.VVitalManager.onCMDSuccess, onFailure failure: @escaping VVItalSDK.VVitalManager.onCMDFailure, exception: @escaping VVItalSDK.VVitalManager.onCMDException, deviceState: @escaping VVItalSDK.VVitalManager.onDeviceConnectionStateChange)
+  public func scanPeripheral()
+  @objc public func centralManager(_ central: CoreBluetooth.CBCentralManager, didDiscover peripheral: CoreBluetooth.CBPeripheral, advertisementData: [Swift.String : Any], rssi RSSI: Foundation.NSNumber)
+  @objc public func centralManager(_ central: CoreBluetooth.CBCentralManager, didConnect peripheral: CoreBluetooth.CBPeripheral)
+  @objc public func centralManager(_ central: CoreBluetooth.CBCentralManager, didDisconnectPeripheral peripheral: CoreBluetooth.CBPeripheral, error: Swift.Error?)
+  @objc public func centralManagerDidUpdateState(_ central: CoreBluetooth.CBCentralManager)
+  @objc public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didDiscoverServices error: Swift.Error?)
+  @objc public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didWriteValueFor characteristic: CoreBluetooth.CBCharacteristic, error: Swift.Error?)
+  @objc public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didDiscoverCharacteristicsFor service: CoreBluetooth.CBService, error: Swift.Error?)
+  @objc public func peripheral(_ peripheral: CoreBluetooth.CBPeripheral, didUpdateValueFor characteristic: CoreBluetooth.CBCharacteristic, error: Swift.Error?)
+  public func connect(peripheral: CoreBluetooth.CBPeripheral)
+  public func disConnect(peripheral: CoreBluetooth.CBPeripheral)
+  public func isConnectedPeripheral() -> Swift.Bool
+  open func getDeviceInfo()
+  open func setCURDTData()
+  open func startTemperature()
+  open func stopTemperature()
+  open func readyToStartTemperature()
+  open func readyToStartMeasurement(measuType: VVItalSDK.VitalEnum.MeasuType)
+  open func startMeasurement(measuType: VVItalSDK.VitalEnum.MeasuType)
+  open func stopMeasurement(measuType: VVItalSDK.VitalEnum.MeasuType)
+  open func UpdateFirmware()
+  @objc deinit
+}
+public struct VSPeriphralDevice {
+  public var peripharal: CoreBluetooth.CBPeripheral
+  public var deviceID: Swift.String
+  public var firmwareVersion: Swift.String
+  public var battery: Swift.Int
+}
+public struct VSError : Swift.Error {
+}
+extension VVItalSDK.VitalEnum.MeasuType : Swift.Equatable {}
+extension VVItalSDK.VitalEnum.MeasuType : Swift.Hashable {}
+extension VVItalSDK.VitalEnum.MeasuType : Swift.RawRepresentable {}
+extension VVItalSDK.VVitalManager.InCommandName : Swift.Equatable {}
+extension VVItalSDK.VVitalManager.InCommandName : Swift.Hashable {}
+extension VVItalSDK.VVitalManager.InCommandName : Swift.RawRepresentable {}
+extension VVItalSDK.VVitalManager.InMeasuType : Swift.Equatable {}
+extension VVItalSDK.VVitalManager.InMeasuType : Swift.Hashable {}
+extension VVItalSDK.VVitalManager.InMeasuType : Swift.RawRepresentable {}
